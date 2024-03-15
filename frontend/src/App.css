@@ -1,0 +1,6 @@
+.app {
+	height: -webkit-fill-available;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+}
