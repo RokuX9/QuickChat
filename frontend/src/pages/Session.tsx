@@ -34,6 +34,7 @@ export default function Session({
       }}
     >
       <div
+        className="messageboard"
         style={{
           textWrap: "wrap",
           overflowY: "scroll",
@@ -41,7 +42,11 @@ export default function Session({
         }}
       >
         {messages.map((message, i) => (
-          <Typography key={i} sx={{ wordBreak: "break-word" }}>
+          <Typography
+            key={i}
+            data-type={message.type}
+            sx={{ wordBreak: "break-word" }}
+          >
             {message.user === userId ? "you" : "peer"} said: {message.content}
           </Typography>
         ))}

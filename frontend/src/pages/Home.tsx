@@ -30,23 +30,28 @@ export default function Home({
       <Typography variant="h1">QuickChat</Typography>
       <Typography variant="h2">{userId}</Typography>
       <div>
-        <Input
-          inputRef={inputRef}
-          type="text"
-          placeholder="Search Remote ID"
-          onChange={(e) => {
-            setPeerId(e.target.value);
-          }}
-        />
-        <Button
-          onClick={() => {
+        <form
+          className="search__form"
+          onSubmit={(e) => {
+            e.preventDefault();
             if (inputRef.current) {
               socket?.emit("search-id", inputRef.current.value);
             }
           }}
         >
-          Search Id
-        </Button>
+          <Input
+            className="search__input"
+            inputRef={inputRef}
+            type="text"
+            placeholder="Search Remote ID"
+            onChange={(e) => {
+              setPeerId(e.target.value);
+            }}
+          />
+          <Button className="search__submit_button" type="submit">
+            Search Id
+          </Button>
+        </form>
       </div>
     </Paper>
   );
