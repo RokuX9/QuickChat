@@ -1,4 +1,5 @@
 import { Paper, Typography, Button, Input, Box } from "@mui/material";
+import { Message } from "../App";
 import React from "react";
 
 export default function Session({
@@ -6,13 +7,16 @@ export default function Session({
   checkSession,
   userId,
   messages,
+  sendFile,
 }: {
   sendMessage: (message: String) => void;
   checkSession: () => void;
   userId: String;
-  messages: Array<{ type: String; content: String; user: String }>;
+  messages: Array<Message>;
+  sendFile: (file: File) => void;
 }): React.JSX.Element {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null);
   const formRef = React.useRef<HTMLFormElement | null>(null);
 
   React.useEffect(() => {
@@ -47,7 +51,9 @@ export default function Session({
             data-type={message.type}
             sx={{ wordBreak: "break-word" }}
           >
-            {message.user === userId ? "you" : "peer"} said: {message.content}
+            {message.user === userId ? "you" : "peer"}{" "}
+            {message.type === "text" ? "said: " : "sent: "}
+            {message.content as string}
           </Typography>
         ))}
       </div>
@@ -82,7 +88,25 @@ export default function Session({
           }}
         />
         <Button type="submit">Submit</Button>
+        <Button
+          onClick={() => {
+            fileInputRef.current!.click();
+          }}
+        >
+          Choose and Send File
+        </Button>
       </Box>
+      <Input
+        inputProps={{ type: "file" }}
+        inputRef={fileInputRef}
+        onChange={(e) => {
+          const target = e.target as HTMLInputElement;
+          if (target.files?.length) {
+            sendFile(target.files[0]);
+          }
+        }}
+        sx={{ display: "none" }}
+      />
     </Paper>
   );
 }
