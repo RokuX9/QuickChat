@@ -8,12 +8,14 @@ export default function Session({
   userId,
   messages,
   sendFile,
+  cancelDownload,
 }: {
   sendMessage: (message: String) => void;
   checkSession: () => void;
   userId: String;
   messages: Array<Message>;
   sendFile: (file: File) => void;
+  cancelDownload: (messageIndex: number) => void;
 }): React.JSX.Element {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement | null>(null);
@@ -45,17 +47,31 @@ export default function Session({
           width: "-webkit-fill-available",
         }}
       >
-        {messages.map((message, i) => (
-          <Typography
-            key={i}
-            data-type={message.type}
-            sx={{ wordBreak: "break-word" }}
-          >
-            {message.user === userId ? "you" : "peer"}{" "}
-            {message.type === "text" ? "said: " : "sent: "}
-            {message.content as string}
-          </Typography>
-        ))}
+        {messages.map((message, i) => {
+          const content = message.content as string;
+          return (
+            <Typography
+              key={i}
+              data-type={message.type}
+              sx={{ wordBreak: "break-word" }}
+            >
+              {message.user === userId ? "you" : "peer"}{" "}
+              {message.type === "text" ? "said: " : "sent: "}
+              {content}{" "}
+              {message.type === "transfer-message" ? (
+                <Button
+                  color="error"
+                  variant="contained"
+                  onClick={() => cancelDownload(i)}
+                >
+                  X
+                </Button>
+              ) : (
+                ""
+              )}
+            </Typography>
+          );
+        })}
       </div>
       <Box
         component={"form"}

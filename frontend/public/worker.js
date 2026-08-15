@@ -9,9 +9,10 @@ self.addEventListener("message", (event) => {
     fileName = "";
     fileSize = "";
   } else if (event.data.type === "metadata") {
-    console.log("applied metadata");
     fileName = event.data.fileName;
     fileSize = event.data.fileSize;
+  } else if (event.data === "cancel") {
+    array = [];
   } else {
     array.push(event.data);
   }
