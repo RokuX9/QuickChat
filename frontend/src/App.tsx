@@ -393,7 +393,7 @@ function App() {
   };
 
   React.useEffect(() => {
-    socketRef.current = io("ws://localhost:3000/");
+    socketRef.current = io("ws://api.quickchat.rokux9.com/");
     socketRef.current.on("connected", (id: String) => {
       setUserId(id);
       socketRef.current?.on(`search-${id}`, initiateConnection);
