@@ -1,0 +1,1 @@
+export const server_url = "wss://api.quickchat.rokux9.com"

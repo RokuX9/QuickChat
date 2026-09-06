@@ -7,6 +7,7 @@ import { Paper, ThemeProvider, createTheme } from "@mui/material";
 import SiteBar from "./components/siteBar/SiteBar";
 import Home from "./pages/Home";
 import Session from "./pages/Session";
+import { server_url } from "./utils/constants";
 export type Message = {
   type: String;
   content: String | FileMetadata;
@@ -75,10 +76,10 @@ function App() {
       messages.map((message, i) => {
         return i === messageIndex
           ? {
-              ...message,
-              type: "cancel-message",
-              content: canceledDownloadMessage,
-            }
+            ...message,
+            type: "cancel-message",
+            content: canceledDownloadMessage,
+          }
           : message;
       }),
     );
@@ -97,10 +98,10 @@ function App() {
       messages.map((message, i) => {
         return i === messageIndex
           ? {
-              ...message,
-              type: "cancel-message",
-              content: canceledDownloadMessage,
-            }
+            ...message,
+            type: "cancel-message",
+            content: canceledDownloadMessage,
+          }
           : message;
       }),
     );
@@ -146,10 +147,10 @@ function App() {
                   return i === messageIndex &&
                     message.type === "transfer-message"
                     ? {
-                        ...message,
-                        type: "done-message",
-                        content: `${downloadsRef.current[downloadIndex].downloadMessage} - Done`,
-                      }
+                      ...message,
+                      type: "done-message",
+                      content: `${downloadsRef.current[downloadIndex].downloadMessage} - Done`,
+                    }
                     : message;
                 }),
               );
@@ -204,9 +205,9 @@ function App() {
                 console.log(i === messageIndex);
                 return i === messageIndex && message.type === "transfer-message"
                   ? {
-                      ...message,
-                      content: `${downloadsRef.current[downloadIndex].downloadMessage} - ${currentProgress}%`,
-                    }
+                    ...message,
+                    content: `${downloadsRef.current[downloadIndex].downloadMessage} - ${currentProgress}%`,
+                  }
                   : message;
               });
             });
@@ -303,10 +304,10 @@ function App() {
           messages.map((message, i) => {
             return i === messageIndex && message.type === "transfer-message"
               ? {
-                  ...message,
-                  type: "done-message",
-                  content: `${downloadMessageContent} - Done`,
-                }
+                ...message,
+                type: "done-message",
+                content: `${downloadMessageContent} - Done`,
+              }
               : message;
           }),
         );
@@ -328,26 +329,26 @@ function App() {
         );
         const currentProgress = calculateProgress(
           downloadsRef.current[downloadIndex].currentFileSize +
-            value!.buffer.byteLength,
+          value!.buffer.byteLength,
           downloadsRef.current[downloadIndex].totalFileSize,
         );
         setMessages((messages) => {
           return messages.map((message, i) =>
             i === messageIndex && message.type === "transfer-message"
               ? {
-                  ...message,
-                  content: `${downloadMessageContent} - ${currentProgress}%`,
-                }
+                ...message,
+                content: `${downloadMessageContent} - ${currentProgress}%`,
+              }
               : message,
           );
         });
         downloadsRef.current = downloadsRef.current.map((download) =>
           download.messageIndex === messageIndex
             ? {
-                ...download,
-                currentFileSize:
-                  download.currentFileSize + value!.buffer.byteLength,
-              }
+              ...download,
+              currentFileSize:
+                download.currentFileSize + value!.buffer.byteLength,
+            }
             : download,
         );
         const packet = new Uint8Array(1 + value!.length);
@@ -393,7 +394,7 @@ function App() {
   };
 
   React.useEffect(() => {
-    socketRef.current = io("wss://api.quickchat.rokux9.com/");
+    socketRef.current = io(server_url);
     socketRef.current.on("connected", (id: String) => {
       setUserId(id);
       socketRef.current?.on(`search-${id}`, initiateConnection);
