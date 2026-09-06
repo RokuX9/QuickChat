@@ -1,1 +1,1 @@
-export const server_url = "wss://api.quickchat.rokux9.com"
+export const server_url = "ws://localhost:3000"
